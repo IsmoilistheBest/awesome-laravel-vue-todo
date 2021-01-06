@@ -1,0 +1,44 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+// Custom
+.bg-custom {
+    background-color: rgba(0,0,0,0.2);
+}
+body{
+    background-color: rgb(74, 175, 244);
+    background: radial-gradient(circle, rgba(74, 175, 244, 1) 32%, rgba(74,78,244,1) 100%);
+}
+.btn-add{
+    font-size: 18px;
+}
+.input-custom{
+    font-size: 18px;
+}
+.edit-input{
+    min-width: 500px;
+}
+svg{
+    cursor: pointer;
+}
+.custom-title{
+    max-width: 200px;
+    overflow: hidden;
+}
+.custom-title:hover{
+    // max-width: 200px;
+    overflow: auto;
+}
+.text-del{
+    text-decoration: line-through;
+}
+.custom-svg{
+    width: 22px;
+    height: 22px;
+}
