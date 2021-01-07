@@ -2171,6 +2171,15 @@ __webpack_require__.r(__webpack_exports__);
       data.append('title', this.temp_title);
       data.append('completed', e.completed);
       axios.post('/api/todo/' + e.id, data).then(function (res) {
+        if (res.data.status == 'error') {
+          _this4.msg = res.data.msg;
+          console.log(_this4.msg);
+          _this4.warning = true;
+          return setTimeout(function () {
+            _this4.warning = false;
+          }, 3000);
+        }
+
         _this4.success = true;
         _this4.msg = "".concat(e.title, " successfully updated to ").concat(_this4.temp_title);
         setTimeout(function () {

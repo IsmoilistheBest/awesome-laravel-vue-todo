@@ -243,6 +243,12 @@
                 axios
                     .post('/api/todo/' + e.id, data)
                     .then(res => {
+                        if(res.data.status == 'error'){
+                            this.msg = res.data.msg;
+                            console.log(this.msg);
+                            this.warning = true;
+                            return setTimeout( () => { this.warning = false; }, 3000 );
+                        }
                         this.success = true;
                         this.msg = `${e.title} successfully updated to ${this.temp_title}`;
                         setTimeout( () => { this.success = false; }, 3000 );
