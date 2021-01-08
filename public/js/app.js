@@ -2087,7 +2087,7 @@ __webpack_require__.r(__webpack_exports__);
         this.msg = 'Hey dude title must be more then 3 letters and less than 255 letters';
         console.log(this.msg);
         this.warning = true;
-        return setTimeout(function () {
+        setTimeout(function () {
           _this2.warning = false;
         }, 3000);
       }
@@ -2158,7 +2158,7 @@ __webpack_require__.r(__webpack_exports__);
         this.msg = 'Hey dude title must be more then 3 letters';
         console.log(this.msg);
         this.warning = true;
-        return setTimeout(function () {
+        setTimeout(function () {
           _this4.warning = false;
         }, 3000);
       }
@@ -2175,7 +2175,7 @@ __webpack_require__.r(__webpack_exports__);
           _this4.msg = res.data.msg;
           console.log(_this4.msg);
           _this4.warning = true;
-          return setTimeout(function () {
+          setTimeout(function () {
             _this4.warning = false;
           }, 3000);
         }

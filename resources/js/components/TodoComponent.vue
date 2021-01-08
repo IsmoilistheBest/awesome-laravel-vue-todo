@@ -170,7 +170,7 @@
                     this.msg = 'Hey dude title must be more then 3 letters and less than 255 letters';
                     console.log(this.msg);
                     this.warning = true;
-                    return setTimeout( () => { this.warning = false; }, 3000 );
+                    setTimeout( () => { this.warning = false; }, 3000 );
                 }
                 data.append('title', this.title);
                 axios
@@ -230,7 +230,7 @@
                     this.msg = 'Hey dude title must be more then 3 letters';
                     console.log(this.msg);
                     this.warning = true;
-                    return setTimeout( () => { this.warning = false; }, 3000 );
+                    setTimeout( () => { this.warning = false; }, 3000 );
                 }
 
                 if(this.temp_title === e.title){
@@ -247,7 +247,7 @@
                             this.msg = res.data.msg;
                             console.log(this.msg);
                             this.warning = true;
-                            return setTimeout( () => { this.warning = false; }, 3000 );
+                            setTimeout( () => { this.warning = false; }, 3000 );
                         }
                         this.success = true;
                         this.msg = `${e.title} successfully updated to ${this.temp_title}`;
