@@ -172,27 +172,30 @@
                     this.warning = true;
                     setTimeout( () => { this.warning = false; }, 3000 );
                 }
-                data.append('title', this.title);
-                axios
-                    .post('/api/todo/', data)
-                    .then( res => {
-                        if(res.data.status == 'error'){
-                            this.msg = res.data.msg;
-                            console.log(this.msg);
+                else{
+                    data.append('title', this.title);
+                    axios
+                        .post('/api/todo/', data)
+                        .then( res => {
+                            if(res.data.status == 'error'){
+                                this.msg = res.data.msg;
+                                console.log(this.msg);
+                                this.warning = true;
+                                setTimeout( () => { this.warning = false; }, 3000 );
+                            }
+                            else{
+                                this.success = true;
+                                this.msg = `${this.title} successfully saved`;
+                                setTimeout( () => { this.success = false; }, 3000 );
+                                this.title = '';
+                                this.getTodos();
+                            }
+                        })
+                        .catch( err => {
+                            this.msg = err.response.data.errors.title[0];
                             this.warning = true;
-                            return setTimeout( () => { this.warning = false; }, 3000 );
-                        }
-                        this.success = true;
-                        this.msg = `${this.title} successfully saved`;
-                        setTimeout( () => { this.success = false; }, 3000 );
-                        this.title = '';
-                        this.getTodos();
-                    })
-                    .catch( err => {
-                        this.msg = err.response.data.errors.title[0];
-                        this.warning = true;
-                        return this.warning;
-                    })
+                        })
+                }
             },
             toggleTodo(e){
                 let data = new FormData;
@@ -211,17 +214,20 @@
                 if (!answer){
                     return false;
                 }
-                axios
-                    .delete('/api/todo/' + e.id)
-                    .then( res => {
-                        this.success = true;
-                        this.msg = `${e.title} successfully deleted`;
-                        setTimeout( () => { this.success = false; }, 3000 );
-                        this.getTodos();
-                    })
-                    .catch( err => {
-                        console.log(err.response.data);
-                    });
+                else{
+                    axios
+                        .delete('/api/todo/' + e.id)
+                        .then( res => {
+                            this.success = true;
+                            this.msg = `${e.title} successfully deleted`;
+                            setTimeout( () => { this.success = false; }, 3000 );
+                            this.getTodos();
+                        })
+                        .catch( err => {
+                            console.log(err.response.data);
+                        });
+                }
+
             },
             updateTodo(e){
                 let data = new FormData;
@@ -233,30 +239,34 @@
                     setTimeout( () => { this.warning = false; }, 3000 );
                 }
 
-                if(this.temp_title === e.title){
+                else if(this.temp_title === e.title){
                     return false;
                 }
+                else{
+                    data.append('_method', 'PATCH');
+                    data.append('title', this.temp_title);
+                    data.append('completed', e.completed);
+                    axios
+                        .post('/api/todo/' + e.id, data)
+                        .then(res => {
+                            if(res.data.status == 'error'){
+                                this.msg = res.data.msg;
+                                console.log(this.msg);
+                                this.warning = true;
+                                setTimeout( () => { this.warning = false; }, 3000 );
+                            }
+                            else{
+                                this.success = true;
+                                this.msg = `${e.title} successfully updated to ${this.temp_title}`;
+                                setTimeout( () => { this.success = false; }, 3000 );
+                                this.getTodos();
+                            }
+                        })
+                        .catch( err => {
+                            console.log(err.response.data);
+                        })
+                }
 
-                data.append('_method', 'PATCH');
-                data.append('title', this.temp_title);
-                data.append('completed', e.completed);
-                axios
-                    .post('/api/todo/' + e.id, data)
-                    .then(res => {
-                        if(res.data.status == 'error'){
-                            this.msg = res.data.msg;
-                            console.log(this.msg);
-                            this.warning = true;
-                            setTimeout( () => { this.warning = false; }, 3000 );
-                        }
-                        this.success = true;
-                        this.msg = `${e.title} successfully updated to ${this.temp_title}`;
-                        setTimeout( () => { this.success = false; }, 3000 );
-                        this.getTodos();
-                    })
-                    .catch( err => {
-                        console.log(err.response.data);
-                    })
             },
             makePagination(response){
                 this.pagination = {

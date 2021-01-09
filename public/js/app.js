@@ -2090,32 +2090,31 @@ __webpack_require__.r(__webpack_exports__);
         setTimeout(function () {
           _this2.warning = false;
         }, 3000);
-      }
+      } else {
+        data.append('title', this.title);
+        axios.post('/api/todo/', data).then(function (res) {
+          if (res.data.status == 'error') {
+            _this2.msg = res.data.msg;
+            console.log(_this2.msg);
+            _this2.warning = true;
+            setTimeout(function () {
+              _this2.warning = false;
+            }, 3000);
+          } else {
+            _this2.success = true;
+            _this2.msg = "".concat(_this2.title, " successfully saved");
+            setTimeout(function () {
+              _this2.success = false;
+            }, 3000);
+            _this2.title = '';
 
-      data.append('title', this.title);
-      axios.post('/api/todo/', data).then(function (res) {
-        if (res.data.status == 'error') {
-          _this2.msg = res.data.msg;
-          console.log(_this2.msg);
+            _this2.getTodos();
+          }
+        })["catch"](function (err) {
+          _this2.msg = err.response.data.errors.title[0];
           _this2.warning = true;
-          return setTimeout(function () {
-            _this2.warning = false;
-          }, 3000);
-        }
-
-        _this2.success = true;
-        _this2.msg = "".concat(_this2.title, " successfully saved");
-        setTimeout(function () {
-          _this2.success = false;
-        }, 3000);
-        _this2.title = '';
-
-        _this2.getTodos();
-      })["catch"](function (err) {
-        _this2.msg = err.response.data.errors.title[0];
-        _this2.warning = true;
-        return _this2.warning;
-      });
+        });
+      }
     },
     toggleTodo: function toggleTodo(e) {
       var data = new FormData();
@@ -2134,19 +2133,19 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!answer) {
         return false;
+      } else {
+        axios["delete"]('/api/todo/' + e.id).then(function (res) {
+          _this3.success = true;
+          _this3.msg = "".concat(e.title, " successfully deleted");
+          setTimeout(function () {
+            _this3.success = false;
+          }, 3000);
+
+          _this3.getTodos();
+        })["catch"](function (err) {
+          console.log(err.response.data);
+        });
       }
-
-      axios["delete"]('/api/todo/' + e.id).then(function (res) {
-        _this3.success = true;
-        _this3.msg = "".concat(e.title, " successfully deleted");
-        setTimeout(function () {
-          _this3.success = false;
-        }, 3000);
-
-        _this3.getTodos();
-      })["catch"](function (err) {
-        console.log(err.response.data);
-      });
     },
     updateTodo: function updateTodo(e) {
       var _this4 = this;
@@ -2161,35 +2160,33 @@ __webpack_require__.r(__webpack_exports__);
         setTimeout(function () {
           _this4.warning = false;
         }, 3000);
-      }
-
-      if (this.temp_title === e.title) {
+      } else if (this.temp_title === e.title) {
         return false;
+      } else {
+        data.append('_method', 'PATCH');
+        data.append('title', this.temp_title);
+        data.append('completed', e.completed);
+        axios.post('/api/todo/' + e.id, data).then(function (res) {
+          if (res.data.status == 'error') {
+            _this4.msg = res.data.msg;
+            console.log(_this4.msg);
+            _this4.warning = true;
+            setTimeout(function () {
+              _this4.warning = false;
+            }, 3000);
+          } else {
+            _this4.success = true;
+            _this4.msg = "".concat(e.title, " successfully updated to ").concat(_this4.temp_title);
+            setTimeout(function () {
+              _this4.success = false;
+            }, 3000);
+
+            _this4.getTodos();
+          }
+        })["catch"](function (err) {
+          console.log(err.response.data);
+        });
       }
-
-      data.append('_method', 'PATCH');
-      data.append('title', this.temp_title);
-      data.append('completed', e.completed);
-      axios.post('/api/todo/' + e.id, data).then(function (res) {
-        if (res.data.status == 'error') {
-          _this4.msg = res.data.msg;
-          console.log(_this4.msg);
-          _this4.warning = true;
-          setTimeout(function () {
-            _this4.warning = false;
-          }, 3000);
-        }
-
-        _this4.success = true;
-        _this4.msg = "".concat(e.title, " successfully updated to ").concat(_this4.temp_title);
-        setTimeout(function () {
-          _this4.success = false;
-        }, 3000);
-
-        _this4.getTodos();
-      })["catch"](function (err) {
-        console.log(err.response.data);
-      });
     },
     makePagination: function makePagination(response) {
       this.pagination = {
@@ -50861,8 +50858,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/rc4347/php_projects/awesome-laravel-vue-todo/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/rc4347/php_projects/awesome-laravel-vue-todo/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/RC4347/php_projects/awesome-laravel-vue-todo/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/RC4347/php_projects/awesome-laravel-vue-todo/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

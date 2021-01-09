@@ -87,11 +87,8 @@ class TodoController extends Controller
     public function update(Request $request, $id)
     {
         $todo = Todo::findOrFail($id);
-        $checking = Todo::where('title', $request->title)
-                                ->where('user_id', auth()->user()->id)
-                                ->where('completed', 0)
-                                ->count();
-        if(!$checking)
+
+        if($request->completed)
         {
             $todo->completed = $request->completed;
             $todo->title = $request->title;
@@ -100,12 +97,25 @@ class TodoController extends Controller
         }
         else
         {
-            return response()->json([
-                'status' => 'error',
-                'msg'    => 'Hey dude you have another uncompleted task like this one'
-            ]);
+            $checking = Todo::where('title', $request->title)
+                                ->where('user_id', auth()->user()->id)
+                                ->where('completed', 0)
+                                ->count();
+            if(!$checking)
+            {
+                $todo->completed = $request->completed;
+                $todo->title = $request->title;
+                $todo->save();
+                return 1;
+            }
+            else
+            {
+                return response()->json([
+                    'status' => 'error',
+                    'msg'    => 'Hey dude you have another uncompleted task like this one'
+                ]);
+            }
         }
-
     }
 
     /**
