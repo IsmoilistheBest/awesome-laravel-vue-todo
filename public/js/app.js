@@ -2052,6 +2052,88 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2059,9 +2141,12 @@ __webpack_require__.r(__webpack_exports__);
       temp_title: '',
       warning: false,
       success: false,
+      temp_description: '',
       msg: '',
       todos: '',
       edit: false,
+      show_id: false,
+      description_id: false,
       pagination: {}
     };
   },
@@ -2092,7 +2177,7 @@ __webpack_require__.r(__webpack_exports__);
         }, 3000);
       } else {
         data.append('title', this.title);
-        axios.post('/api/todo/', data).then(function (res) {
+        axios.post('/api/todo', data).then(function (res) {
           if (res.data.status == 'error') {
             _this2.msg = res.data.msg;
             console.log(_this2.msg);
@@ -2118,10 +2203,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     toggleTodo: function toggleTodo(e) {
       var data = new FormData();
+      this.edit = false;
       e.completed = !e.completed;
       data.append('_method', 'PATCH');
       data.append('completed', Number(+e.completed));
       data.append('title', e.title);
+      data.append('description', e.description);
       axios.post('/api/todo/' + e.id, data)["catch"](function (err) {
         console.log(err.response.data.data);
       });
@@ -2166,6 +2253,7 @@ __webpack_require__.r(__webpack_exports__);
         data.append('_method', 'PATCH');
         data.append('title', this.temp_title);
         data.append('completed', e.completed);
+        data.append('description', e.description);
         axios.post('/api/todo/' + e.id, data).then(function (res) {
           if (res.data.status == 'error') {
             _this4.msg = res.data.msg;
@@ -2195,6 +2283,50 @@ __webpack_require__.r(__webpack_exports__);
         prev_page_url: response.prev_page_url,
         next_page_url: response.next_page_url
       };
+    },
+    addDescription: function addDescription(e) {
+      var _this5 = this;
+
+      var data = new FormData();
+
+      if (this.temp_description == null || this.temp_description.length <= 3) {
+        var error_msg = 'Hey dude title must be more then 3 letters';
+        alert(error_msg);
+      } else if (e.description === this.temp_description) {
+        var _error_msg = 'Hey dude description is the same with previous one';
+        alert(_error_msg);
+      } else {
+        data.append('_method', 'PATCH');
+        data.append('title', e.title);
+        data.append('completed', e.completed);
+        data.append('description', this.temp_description);
+        axios.post('/api/todo/' + e.id, data).then(function (res) {
+          if (res.data.status == 'error') {
+            _this5.msg = res.data.msg;
+            console.log(_this5.msg);
+            _this5.warning = true;
+            setTimeout(function () {
+              _this5.warning = false;
+            }, 3000);
+          } else {
+            var modal = document.getElementById('exampleModalCenter');
+            modal.classList.remove('show');
+            modal.setAttribute('aria-hidden', 'true');
+            modal.setAttribute('style', 'display: none');
+            var modalBackdrops = document.getElementsByClassName('modal-backdrop');
+            document.body.removeChild(modalBackdrops[0]);
+            _this5.success = true;
+            _this5.msg = "Your \"".concat(_this5.temp_description, "\" description successfully saved");
+            setTimeout(function () {
+              _this5.success = false;
+            }, 3000);
+
+            _this5.getTodos();
+          }
+        })["catch"](function (err) {
+          console.log(err.response.data);
+        });
+      }
     }
   },
   mounted: function mounted() {
@@ -37942,7 +38074,96 @@ var render = function() {
                       ]
                     )
                   : _vm._e()
-              ])
+              ]),
+              _vm._v(" "),
+              _vm.description_id == todo.id
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "modal fade",
+                      attrs: {
+                        id: "exampleModalCenter",
+                        tabindex: "-1",
+                        role: "dialog",
+                        "aria-labelledby": "exampleModalCenterTitle",
+                        "aria-hidden": "true"
+                      }
+                    },
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "modal-dialog modal-dialog-centered",
+                          attrs: { role: "document" }
+                        },
+                        [
+                          _c("div", { staticClass: "modal-content" }, [
+                            _vm._m(4, true),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "modal-body" }, [
+                              _c("textarea", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.temp_description,
+                                    expression: "temp_description"
+                                  }
+                                ],
+                                attrs: {
+                                  cols: "50",
+                                  rows: "10",
+                                  placeholder: "Enter your description here..."
+                                },
+                                domProps: { value: _vm.temp_description },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.temp_description = $event.target.value
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "modal-footer" }, [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  attrs: {
+                                    type: "button",
+                                    "data-dismiss": "modal"
+                                  }
+                                },
+                                [_vm._v("Close")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.addDescription(todo)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                        Save\n                                    "
+                                  )
+                                ]
+                              )
+                            ])
+                          ])
+                        ]
+                      )
+                    ]
+                  )
+                : _vm._e()
             ]),
             _vm._v(" "),
             !_vm.edit || _vm.edit != todo.id
@@ -37992,6 +38213,90 @@ var render = function() {
               : _vm._e(),
             _vm._v(" "),
             _c("td", [
+              _c("span", { staticClass: "mr-2" }, [
+                _c(
+                  "svg",
+                  {
+                    staticClass: "svg-custom",
+                    staticStyle: {
+                      "-ms-transform": "rotate(360deg)",
+                      "-webkit-transform": "rotate(360deg)",
+                      transform: "rotate(360deg)"
+                    },
+                    attrs: {
+                      xmlns: "http://www.w3.org/2000/svg",
+                      "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                      "aria-hidden": "true",
+                      focusable: "false",
+                      width: "1.4em",
+                      height: "1em",
+                      preserveAspectRatio: "xMidYMid meet",
+                      viewBox: "0 0 1792 1280",
+                      "data-toggle": "modal",
+                      "data-target": "#exampleModal"
+                    },
+                    on: {
+                      click: function($event) {
+                        _vm.show_id = todo.id
+                      }
+                    }
+                  },
+                  [
+                    _c("path", {
+                      attrs: {
+                        d:
+                          "M1664 704q-152-236-381-353q61 104 61 225q0 185-131.5 316.5T896 1024T579.5 892.5T448 576q0-121\n                            61-225q-229 117-381 353q133 205 333.5 326.5T896 1152t434.5-121.5T1664 704zM944 320q0-20-14-34t-34-14q-125\n                            0-214.5 89.5T592 576q0 20 14 34t34 14t34-14t14-34q0-86 61-147t147-61q20 0 34-14t14-34zm848 384q0 34-20\n                            69q-140 230-376.5 368.5T896 1280t-499.5-139T20 773Q0 738 0 704t20-69q140-229 376.5-368T896 128t499.5\n                            139T1772 635q20 35 20 69z",
+                        fill: "#626262"
+                      }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _vm.show_id == todo.id
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "modal fade",
+                        attrs: {
+                          id: "exampleModal",
+                          tabindex: "-1",
+                          role: "dialog",
+                          "aria-labelledby": "exampleModalLabel",
+                          "aria-hidden": "true"
+                        }
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "modal-dialog",
+                            attrs: { role: "document" }
+                          },
+                          [
+                            _c("div", { staticClass: "modal-content" }, [
+                              _vm._m(5, true),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "modal-body" }, [
+                                _c("h3", [
+                                  _vm._v("Title: " + _vm._s(todo.title))
+                                ]),
+                                _vm._v(" "),
+                                _c("p", [
+                                  _vm._v(
+                                    "\n                                            Description: " +
+                                      _vm._s(todo.description) +
+                                      "\n                                        "
+                                  )
+                                ])
+                              ])
+                            ])
+                          ]
+                        )
+                      ]
+                    )
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
               !todo.completed
                 ? _c("span", { staticClass: "mr-2" }, [
                     _vm.edit != todo.id
@@ -38088,6 +38393,62 @@ var render = function() {
                       : _vm._e()
                   ])
                 : _vm._e(),
+              _vm._v(" "),
+              _c("span", { staticClass: "mr-2" }, [
+                !todo.completed
+                  ? _c(
+                      "svg",
+                      {
+                        staticClass: "svg-circleplus",
+                        attrs: {
+                          "data-toggle": "modal",
+                          "data-target": "#exampleModalCenter",
+                          stroke: "#00CC00",
+                          width: "36",
+                          height: "36",
+                          viewBox: "0 0 100 100"
+                        },
+                        on: {
+                          click: function($event) {
+                            _vm.description_id = todo.id
+                            _vm.temp_description = todo.description
+                          }
+                        }
+                      },
+                      [
+                        _c("circle", {
+                          attrs: {
+                            cx: "50",
+                            cy: "50",
+                            r: "45",
+                            fill: "none",
+                            "stroke-width": "7.5"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("line", {
+                          attrs: {
+                            x1: "32.5",
+                            y1: "50",
+                            x2: "67.5",
+                            y2: "50",
+                            "stroke-width": "5"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("line", {
+                          attrs: {
+                            x1: "50",
+                            y1: "32.5",
+                            x2: "50",
+                            y2: "67.5",
+                            "stroke-width": "5"
+                          }
+                        })
+                      ]
+                    )
+                  : _vm._e()
+              ]),
               _vm._v(" "),
               _c("span", { staticClass: "mr-2" }, [
                 _c(
@@ -38273,6 +38634,56 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Actions")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLongTitle" } },
+        [_vm._v("Description")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
+        [_vm._v("About Todo")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
     ])
   }
 ]

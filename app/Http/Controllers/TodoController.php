@@ -14,7 +14,7 @@ class TodoController extends Controller
      */
     public function index(Todo $todo)
     {
-        return $todo::where('user_id', auth()->user()->id)->paginate(5);
+        return $todo::where('user_id', auth()->user()->id)->latest()->paginate(5);
     }
 
     /**
@@ -95,6 +95,14 @@ class TodoController extends Controller
             $todo->save();
             return 1;
         }
+        if($request->description)
+        {
+            $todo->completed = $request->completed;
+                $todo->title = $request->title;
+                $todo->description = $request->description;
+                $todo->save();
+                return 1;
+        }
         else
         {
             $checking = Todo::where('title', $request->title)
@@ -105,6 +113,7 @@ class TodoController extends Controller
             {
                 $todo->completed = $request->completed;
                 $todo->title = $request->title;
+                $todo->description = $request->description;
                 $todo->save();
                 return 1;
             }
