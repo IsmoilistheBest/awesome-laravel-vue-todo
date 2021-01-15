@@ -98,10 +98,10 @@ class TodoController extends Controller
         if($request->description)
         {
             $todo->completed = $request->completed;
-                $todo->title = $request->title;
-                $todo->description = $request->description;
-                $todo->save();
-                return 1;
+            $todo->title = $request->title;
+            $todo->description = $request->description;
+            $todo->save();
+            return 1;
         }
         else
         {

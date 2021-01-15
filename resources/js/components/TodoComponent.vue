@@ -289,7 +289,6 @@
                 data.append('_method', 'PATCH');
                 data.append('completed', Number(+e.completed));
                 data.append('title', e.title);
-                data.append('description', e.description);
                 axios
                     .post('/api/todo/' + e.id, data)
                     .catch(err => {

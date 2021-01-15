@@ -2208,7 +2208,6 @@ __webpack_require__.r(__webpack_exports__);
       data.append('_method', 'PATCH');
       data.append('completed', Number(+e.completed));
       data.append('title', e.title);
-      data.append('description', e.description);
       axios.post('/api/todo/' + e.id, data)["catch"](function (err) {
         console.log(err.response.data.data);
       });
@@ -51269,8 +51268,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/RC4347/php_projects/awesome-laravel-vue-todo/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/RC4347/php_projects/awesome-laravel-vue-todo/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/rc4347/php_projects/awesome-laravel-vue-todo/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/rc4347/php_projects/awesome-laravel-vue-todo/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
