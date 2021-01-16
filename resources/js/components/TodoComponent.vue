@@ -129,7 +129,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <h3>Title: {{ todo.title }}</h3>
-                                            <p>
+                                            <p v-if="todo.description" >
                                                 Description: {{ todo.description }}
                                             </p>
                                         </div>
@@ -332,7 +332,6 @@
                     data.append('_method', 'PATCH');
                     data.append('title', this.temp_title);
                     data.append('completed', e.completed);
-                    data.append('description', e.description);
                     axios
                         .post('/api/todo/' + e.id, data)
                         .then(res => {

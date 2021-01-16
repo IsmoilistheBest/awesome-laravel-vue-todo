@@ -84,9 +84,9 @@ class TodoController extends Controller
      * @param  \App\Todo  $todo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Todo $todo)
     {
-        $todo = Todo::findOrFail($id);
+        // $todo = Todo::findOrFail($id);
 
         if($request->completed)
         {
@@ -133,9 +133,8 @@ class TodoController extends Controller
      * @param  \App\Todo  $todo
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Todo $todo)
     {
-        $todo = Todo::findOrFail($id);
         $todo->delete();
         $todo = Todo::where('user_id', auth()->user()->id)->get();
         return $todo;

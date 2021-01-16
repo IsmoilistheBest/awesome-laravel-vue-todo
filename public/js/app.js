@@ -2252,7 +2252,6 @@ __webpack_require__.r(__webpack_exports__);
         data.append('_method', 'PATCH');
         data.append('title', this.temp_title);
         data.append('completed', e.completed);
-        data.append('description', e.description);
         axios.post('/api/todo/' + e.id, data).then(function (res) {
           if (res.data.status == 'error') {
             _this4.msg = res.data.msg;
@@ -38280,13 +38279,15 @@ var render = function() {
                                   _vm._v("Title: " + _vm._s(todo.title))
                                 ]),
                                 _vm._v(" "),
-                                _c("p", [
-                                  _vm._v(
-                                    "\n                                            Description: " +
-                                      _vm._s(todo.description) +
-                                      "\n                                        "
-                                  )
-                                ])
+                                todo.description
+                                  ? _c("p", [
+                                      _vm._v(
+                                        "\n                                            Description: " +
+                                          _vm._s(todo.description) +
+                                          "\n                                        "
+                                      )
+                                    ])
+                                  : _vm._e()
                               ])
                             ])
                           ]
